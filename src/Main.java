@@ -7,19 +7,25 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        List<Device> switchedOnDevices = new ArrayList<>();
 
         AddDeviceCommand addDeviceCommand = new AddDeviceCommand();
+
         List<Device> devices = addDeviceCommand.getDevices();
 
         SwitchOnCommand switchOnCommand = new SwitchOnCommand(devices);
+
+        List<Device> switchedOnDevices = switchOnCommand.getSwitchedOnDevices();
+
         SwitchOffCommand switchOffCommand = new SwitchOffCommand(devices, switchedOnDevices);
 
-        Invoker invoker = new Invoker(addDeviceCommand, switchOnCommand, switchOffCommand);
+        SortDeviceCommand sortDeviceCommand = new SortDeviceCommand(devices);
+
+        Invoker invoker = new Invoker(addDeviceCommand, switchOnCommand, switchOffCommand, sortDeviceCommand);
 
         invoker.addDevice();
         invoker.addDevice();
         invoker.addDevice();
+        invoker.sortDevice();
         invoker.switchOnDevice();
         invoker.switchOnDevice();
         invoker.switchOffDevice();

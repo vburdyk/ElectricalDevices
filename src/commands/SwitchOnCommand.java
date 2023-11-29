@@ -38,6 +38,8 @@ public class SwitchOnCommand implements Command {
                     device.turnOn();
                     switchedOnDevices.add(device);
                     System.out.println(device.getName() + " turned on.");
+                    float totalPower = calculateTotalPower();
+                    System.out.println("Total power consumption of all turned on devices: " + totalPower + " watts");
                     System.out.println("List of turned on devices: ");
                     for (int i = 0; i < switchedOnDevices.size(); i++) {
                         if (switchedOnDevices.get(i).isOn()) {
@@ -51,5 +53,13 @@ public class SwitchOnCommand implements Command {
         if (!foundDevice) {
             System.out.println("Device not found. Please enter a valid device name.");
         }
+    }
+
+    private float calculateTotalPower() {
+        float totalPower = 0;
+        for (Device device : switchedOnDevices) {
+            totalPower += device.getPower();
+        }
+        return totalPower;
     }
 }
