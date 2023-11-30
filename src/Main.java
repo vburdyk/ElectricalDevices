@@ -1,31 +1,66 @@
+import java.util.Scanner;
+
 import commands.*;
-import devices.Device;
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
         AddDeviceCommand addDeviceCommand = new AddDeviceCommand();
+        SwitchOnCommand switchOnCommand = new SwitchOnCommand(addDeviceCommand.getDevices());
+        SwitchOffCommand switchOffCommand = new SwitchOffCommand(addDeviceCommand.getDevices(), switchOnCommand.getSwitchedOnDevices());
+        SortDeviceCommand sortDeviceCommand = new SortDeviceCommand(addDeviceCommand.getDevices());
+        FindByRangeCommand findByRangeCommand = new FindByRangeCommand(addDeviceCommand.getDevices());
+        ShowDeviceCommand showDeviceCommand = new ShowDeviceCommand(addDeviceCommand.getDevices());
 
-        List<Device> devices = addDeviceCommand.getDevices();
+        Invoker invoker = new Invoker(addDeviceCommand, switchOnCommand, switchOffCommand, sortDeviceCommand, findByRangeCommand, showDeviceCommand);
 
-        SwitchOnCommand switchOnCommand = new SwitchOnCommand(devices);
+        while (true) {
+            printMenu();
 
-        List<Device> switchedOnDevices = switchOnCommand.getSwitchedOnDevices();
+            int choice = scanner.nextInt();
+            scanner.nextLine();
 
-        SwitchOffCommand switchOffCommand = new SwitchOffCommand(devices, switchedOnDevices);
-        SortDeviceCommand sortDeviceCommand = new SortDeviceCommand(devices);
-        FindByRangeCommand findByRangeCommand = new FindByRangeCommand(devices);
+            switch (choice) {
+                case 1:
+                    invoker.addDevice();
+                    break;
+                case 2:
+                    invoker.showDevice();
+                    break;
+                case 3:
+                    invoker.switchOnDevice();
+                    break;
+                case 4:
+                    invoker.switchOffDevice();
+                    break;
+                case 5:
+                    invoker.findByRange();
+                    break;
+                case 6:
+                    invoker.sortDevice();
+                    break;
+                case 7:
+                    System.out.println("Exiting the program.");
+                    scanner.close();
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid choice. Please enter a number from 1 to 6.");
+                    break;
+            }
+        }
+    }
 
-        Invoker invoker = new Invoker(addDeviceCommand, switchOnCommand, switchOffCommand, sortDeviceCommand, findByRangeCommand);
-
-        invoker.addDevice();
-        invoker.addDevice();
-        invoker.addDevice();
-        invoker.findByRange();
-        invoker.sortDevice();
-        invoker.switchOnDevice();
-        invoker.switchOnDevice();
-        invoker.switchOffDevice();
-
+    private static void printMenu() {
+        System.out.println();
+        System.out.println("Menu:");
+        System.out.println("1. Add Device");
+        System.out.println("2. Show Devices");
+        System.out.println("3. Switch On Device");
+        System.out.println("4. Switch Off Device");
+        System.out.println("5. Find By Power Range");
+        System.out.println("6. Sort Devices");
+        System.out.println("7. Exit");
+        System.out.println("Enter your choice:");
     }
 }

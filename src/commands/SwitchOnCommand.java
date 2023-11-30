@@ -26,7 +26,26 @@ public class SwitchOnCommand implements Command {
             System.out.println("There are no created devices, please add at least 1 device");
             return;
         }
+
+        List<Device> turnedOffDevices = new ArrayList<>();
+
+        System.out.println("List of turned off devices: ");
+        for (Device device : devices) {
+            if (!device.isOn()) {
+                turnedOffDevices.add(device);
+            }
+        }
+
+        if(turnedOffDevices.isEmpty()){
+            System.out.println("All of your devices is already turned on. Try to add one more device.");
+            return;
+        }
+
         System.out.println("Please, enter the name of the device which you want to turn on: ");
+        for (int i = 0; i < turnedOffDevices.size(); i++) {
+            System.out.println(i + 1 + ". " + turnedOffDevices.get(i));
+        }
+
         String selectedDeviceName = scanner.nextLine();
         boolean foundDevice = false;
         for (Device device : devices) {

@@ -1,6 +1,5 @@
 package commands;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -35,6 +34,13 @@ public class SwitchOffCommand implements Command {
         }
 
         System.out.println("Please, enter the name of the device which you want to turn off: ");
+
+        for (int i = 0; i < switchedOnDevices.size(); i++) {
+            if (switchedOnDevices.get(i).isOn()) {
+                System.out.println(i + 1 + ". " + switchedOnDevices.get(i));
+            }
+        }
+
         String selectedDeviceName = scanner.nextLine();
         boolean foundDevice = false;
         for (Device device : devices) {
